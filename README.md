@@ -14,7 +14,7 @@ og.png            Bağlantı paylaşılınca görünen önizleme (1200×630, kan
 ## Depo düzeni
 
 Site, YouTube çalışma deposunda `site/` klasöründe yazılır. Yalnızca bu klasör
-`github.com/MehmetTheConqueror/degerinkorunumu` deposuna gider (`site` uzak deposu, git subtree);
+`github.com/degerinkorunumu/degerinkorunumu.github.io` deposuna gider (`site` uzak deposu, git subtree);
 orada dosyalar kök dizindedir. Çalışma deposunun geri kalanı GitHub'a gitmez.
 
 Değişiklikten sonra (çalışma deposunun kökünde):
@@ -24,15 +24,17 @@ git add site && git commit -m "Site: ..."
 git subtree push --prefix=site site main
 ```
 
-## Cloudflare Pages
+## GitHub Pages
 
-Adres: https://degerinkorunumu.pages.dev/
+Adres: https://degerinkorunumu.github.io/ (kullanıcı sitesi: `main` dalının kökü yayınlanır, derleme yok).
+`.nojekyll` dosyası Jekyll işlemesini kapatır; dosyalar olduğu gibi sunulur. `main`'e her push birkaç dakikada
+yayına çıkar. Uzantısız adresler (`/araclar/dca`) `.html` dosyasına gider.
 
-Pages projesi `degerinkorunumu`, GitHub deposuna bağlı. Framework preset `None`, Build command boş,
-Build output directory boş (kök). `main`'e her push siteyi günceller.
+2026-11-22'ye kadar site Cloudflare Pages'teydi (degerinkorunumu.pages.dev, eski depo
+MehmetTheConqueror/degerinkorunumu); bazı operatörlerde sorun çıkabileceği için GitHub Pages'e taşındı.
 
-Adres değişirse (kendi alan adı bağlanırsa) `index.html`'deki `canonical`, `og:url` ve `og:image`
-değerlerini yeni adrese çevir; `og:image` tam adres olmalı, göreli yolu çoğu uygulama okumaz.
+Adres değişirse (kendi alan adı bağlanırsa) `index.html` ve `araclar/dca.html`'deki `canonical`, `og:url` ve
+`og:image` değerlerini yeni adrese çevir; `og:image` tam adres olmalı, göreli yolu çoğu uygulama okumaz.
 
 ## Verinin güncellenmesi
 
