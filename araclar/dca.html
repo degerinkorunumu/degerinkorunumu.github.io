@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Düzenli Alım Hesaplayıcı · Değerin Korunumu</title>
-<meta name="description" content="Tüm dünya borsası, S&P 500, Nasdaq 100, çip şirketleri, altın ve Bitcoin'den kendi sepetinizi kurun; her ay düzenli alım yapsaydınız sepetiniz bugün ne kadar ederdi? Son 15 yılın aylık fiyatlarıyla DCA hesaplayıcı.">
+<meta name="description" content="Tüm dünya borsası, S&P 500, Nasdaq 100, çip şirketleri, temettü ETF'i SCHD, altın, gümüş ve Bitcoin'den kendi sepetinizi kurun; her ay düzenli alım yapsaydınız sepetiniz bugün ne kadar ederdi? Son 15 yılın aylık fiyatlarıyla DCA hesaplayıcı.">
 <meta name="theme-color" content="#1b3a6b">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://degerinkorunumu.github.io/araclar/dca">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Düzenli alım (DCA) hesaplayıcı · Değerin Korunumu">
-<meta property="og:description" content="Kendi sepetinizi kurun: her ay düzenli alım yapsaydınız bugün ne kadarınız olurdu? Tüm dünya borsası, S&P 500, Nasdaq 100, çip şirketleri, altın ve Bitcoin.">
+<meta property="og:description" content="Kendi sepetinizi kurun: her ay düzenli alım yapsaydınız bugün ne kadarınız olurdu? Tüm dünya borsası, S&P 500, Nasdaq 100, çip şirketleri, temettü şirketleri, altın, gümüş ve Bitcoin.">
 <meta property="og:url" content="https://degerinkorunumu.github.io/araclar/dca">
 <meta property="og:image" content="https://degerinkorunumu.github.io/og.png">
 <meta property="og:image:width" content="1200">
@@ -25,19 +25,19 @@
 /* Varlık renkleri kimliğe bağlı; seçim değişince boyanmaz. Açık ve koyu adımlar ayrı doğrulandı;
    yığılmış grafikte komşu renkler YIGIN sırasıyla (script) ayırt edilebilir kalır. */
 :root {
-  --s-vt: #6250d6; --s-qqq: #2a78d6; --s-bitcoin: #eb6834; --s-voo: #1baf7a; --s-altin: #eda100; --s-smh: #e87ba4;
+  --s-vt: #6250d6; --s-schd: #008300; --s-gumus: #e34948; --s-qqq: #2a78d6; --s-bitcoin: #eb6834; --s-voo: #1baf7a; --s-altin: #eda100; --s-smh: #e87ba4;
   --pozitif: #006300; --negatif: #c62f2f;
   --izgara: #e6e9ef; --eksen: #c7cdd8; --soluk: #6b7487;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --s-vt: #9085e9; --s-qqq: #3987e5; --s-bitcoin: #d95926; --s-voo: #199e70; --s-altin: #c98500; --s-smh: #d55181;
+    --s-vt: #9085e9; --s-schd: #0ca30c; --s-gumus: #e66767; --s-qqq: #3987e5; --s-bitcoin: #d95926; --s-voo: #199e70; --s-altin: #c98500; --s-smh: #d55181;
     --pozitif: #2bb52b; --negatif: #ef6b6b;
     --izgara: #222c3d; --eksen: #34425a; --soluk: #8b95a8;
   }
 }
 :root[data-theme="dark"] {
-  --s-vt: #9085e9; --s-qqq: #3987e5; --s-bitcoin: #d95926; --s-voo: #199e70; --s-altin: #c98500; --s-smh: #d55181;
+  --s-vt: #9085e9; --s-schd: #0ca30c; --s-gumus: #e66767; --s-qqq: #3987e5; --s-bitcoin: #d95926; --s-voo: #199e70; --s-altin: #c98500; --s-smh: #d55181;
   --pozitif: #2bb52b; --negatif: #ef6b6b;
   --izgara: #222c3d; --eksen: #34425a; --soluk: #8b95a8;
 }
@@ -148,8 +148,8 @@ select:focus-visible, button:focus-visible, .grafik svg:focus-visible { outline:
 .dagilim-liste .soluk { color: var(--soluk); }
 .kucuk-not { margin-top: 12px; font-size: 13px; color: var(--soluk); line-height: 1.5; }
 
-.sonuclar { margin-top: 16px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
-.sonuc { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px; position: relative; overflow: hidden; }
+.sonuclar { margin-top: 16px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
+.sonuc { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px; position: relative; overflow: hidden; }
 .sonuc::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: 4px; background: var(--renk); }
 .sonuc .bas { display: flex; align-items: baseline; gap: 8px; }
 .sonuc .bas b { font-family: Manrope, Inter, sans-serif; font-weight: 800; font-size: 17px; }
@@ -158,7 +158,7 @@ select:focus-visible, button:focus-visible, .grafik svg:focus-visible { outline:
 .sonuc .kazanc { margin-top: 4px; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
 .arti { color: var(--pozitif); }
 .eksi { color: var(--negatif); }
-dl.bilgi { margin-top: 14px; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+dl.bilgi { margin-top: 14px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 10px; font-size: 13.5px; border-top: 1px solid var(--line); padding-top: 12px; }
 dl.bilgi dt { color: var(--soluk); white-space: nowrap; }
 dl.bilgi dd { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .sonuc .not { margin-top: 10px; font-size: 13px; color: var(--soluk); line-height: 1.5; }
@@ -287,7 +287,7 @@ details.tablo summary { cursor: pointer; padding: 14px 18px; font-weight: 700; f
         <li>Alım, her ayın ilk işlem günündeki kapanış fiyatından yapılıyor. Başlangıç ve bitiş ayı da dahil, seçilen her ay için her varlığa kendi tutarı kadar alım var.</li>
         <li>Sepette her ay aynı dağılımla alım yapılıyor ama eldekiler satılıp yeniden dengelenmiyor. Hızlı büyüyen varlığın sepetteki payı zamanla artıyor; dönem sonundaki dağılım bu yüzden başlangıçtakinden farklı çıkıyor.</li>
         <li>Birikimin değeri dönemin sonundaki fiyatla hesaplanıyor. Bitiş olarak son ayı seçtiyseniz son kapanış fiyatı kullanılıyor, daha eski bir ay seçtiyseniz bir sonraki ayın ilk işlem günü.</li>
-        <li>VT, VOO, QQQ ve SMH fonlarının dağıttığı temettüler aynı fona yeniden yatırılmış sayılıyor. Altında ons fiyatı (vadeli kontrat; spot fiyata çok yakın), Bitcoin'de dolar fiyatı kullanılıyor. Bitcoin verisi Ekim 2014'ten başlıyor; daha önceki aylarda Bitcoin'e ayrılan pay yatırılmıyor, o aylarda toplam yatırılan da o kadar az oluyor.</li>
+        <li>VT, VOO, QQQ, SMH ve SCHD fonlarının dağıttığı temettüler aynı fona yeniden yatırılmış sayılıyor. SCHD, yüksek ve düzenli temettü dağıtan yaklaşık yüz ABD şirketinden oluşuyor; getirisinin önemli bir kısmı bu temettülerden geliyor. Altında ve gümüşte ons fiyatı (vadeli kontrat; spot fiyata çok yakın), Bitcoin'de dolar fiyatı kullanılıyor. Bitcoin verisi Ekim 2014'ten başlıyor; daha önceki aylarda Bitcoin'e ayrılan pay yatırılmıyor, o aylarda toplam yatırılan da o kadar az oluyor.</li>
         <li>Komisyon, alım-satım farkı ve vergi hesaba katılmadı. Fonların yıllık yönetim gideri fiyatın içinde zaten var.</li>
         <li>Bütün tutarlar dolar cinsinden. Lirayla düzenli alım yapan birinin sonucu, o dönemde kurun nasıl gittiğine göre farklı çıkar.</li>
         <li>Yıllık getiri, her ay farklı bir tarihte para yatırıldığı için iç verim oranıyla hesaplanıyor; bir yıldan kısa dönemlerde gösterilmiyor. "En kötü an", birikimin o ana kadar yatırılan paraya göre en çok gerilediği ay başı.</li>
@@ -315,9 +315,9 @@ const GRAM = 31.1035;
 const YIL_MS = 365.25 * 864e5;
 const HAZIR = [1, 3, 5, 10, 15];
 const UST = 1e6;
-// Yığılmış grafikte ve dağılım çubuğunda alttan üste sıra. Renk doğrulayıcısından iki temada da geçen sıralardan
-// biri (sarı altın ile turuncu Bitcoin, pembe SMH ile turuncu Bitcoin yan yana gelmesin diye).
-const YIGIN = ['altin', 'voo', 'vt', 'smh', 'qqq', 'bitcoin'];
+// Yığılmış grafikte ve dağılım çubuğunda alttan üste sıra. Sekiz rengin bütün sıralamaları renk doğrulayıcısından
+// geçirildi (açık #ffffff, koyu #172030); bu sıra iki temada da geçiyor ve herhangi bir varlık çıkarılınca da geçiyor.
+const YIGIN = ['altin', 'smh', 'vt', 'schd', 'gumus', 'qqq', 'voo', 'bitcoin'];
 const yiginSira = (a, b) => YIGIN.indexOf(a.a.id) - YIGIN.indexOf(b.a.id);
 
 const nf = (o) => new Intl.NumberFormat('tr-TR', o);
@@ -955,7 +955,8 @@ function sonuclariYaz(hepsi) {
     k.appendChild(el('div', 'deger', para(s.deger)));
     k.appendChild(el('div', 'kazanc ' + (s.kar >= 0 ? 'arti' : 'eksi'), f0s.format(s.kar) + ' · ' + yuzde(s.oran)));
     const birim = a.birim === 'ons' ? 'ons' : a.birim === 'BTC' ? 'BTC' : 'pay';
-    const biriken = a.birim === 'ons' ? sayi(s.adet * GRAM, 1) + ' gram'
+    const gram = s.adet * GRAM;
+    const biriken = a.birim === 'ons' ? (gram >= 1000 ? sayi(gram / 1000, 1) + ' kg' : sayi(gram, 1) + ' gram')
       : a.birim === 'BTC' ? sayi(s.adet, 4) + ' BTC'
       : sayi(s.adet, s.adet < 10 ? 3 : 1) + ' pay';
     k.appendChild(bilgiListesi([

@@ -6,7 +6,7 @@ Derleme adımı olmayan statik site. Cloudflare Pages bu klasörü olduğu gibi 
 index.html        Ana sayfa
 stil.css          Bütün sayfaların ortak stili (renkler, başlık, kartlar, koyu tema)
 araclar/dca.html  Düzenli alım (DCA) hesaplayıcı → /araclar/dca
-veri/dca.json     Hesaplayıcının verisi: VT, VOO, QQQ, SMH, altın, Bitcoin; son 180 ayın aylık fiyatları
+veri/dca.json     Hesaplayıcının verisi: VT, VOO, QQQ, SMH, SCHD, altın, gümüş, Bitcoin; son 180 ayın aylık fiyatları
 favicon.svg       Δ = 0 işareti
 og.png            Bağlantı paylaşılınca görünen önizleme (1200×630, kanal/cikti/kapak_2560.png'den kırpıldı)
 ```
